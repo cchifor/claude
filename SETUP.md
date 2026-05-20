@@ -141,10 +141,21 @@ to paste it into the prompt one line at a time:
 /plugin install codex-toolkit@chifor-claude
 /plugin install forge@chifor-claude
 /plugin install writing-a-readme@chifor-claude
+/plugin install superpowers@claude-plugins-official
 ```
 
 After they run those, Claude Code will pick up the plugins on the next
 session start (or sooner — check `/plugin` to confirm).
+
+**About the `superpowers` line.** It comes from a different marketplace —
+`claude-plugins-official`, which is Anthropic's default marketplace and
+ships pre-registered with Claude Code, so no `/plugin marketplace add` is
+needed for it. The dotfiles in this repo expect it to be installed:
+`dotfiles/settings.json` enables it under `enabledPlugins`, and the
+project-level `CLAUDE.md` references brainstorming / debugging / TDD
+skills that come from this plugin. If you skip it, those skills won't be
+available and you'll see "skill not found" if anything tries to invoke
+them.
 
 ## Step 7 — Optional: codex CLI
 
