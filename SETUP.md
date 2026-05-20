@@ -25,6 +25,84 @@ Run the right probe for your current shell:
 Remember the result. Every subsequent step has a Windows and a Unix
 variant — pick the matching one.
 
+## Step 0.5 — Ensure GitHub auth (one-time per machine)
+
+Claude needs to talk to GitHub for everything from cloning private repos
+to opening PRs. This step sets up `gh` CLI auth + an SSH key in one
+interactive command. **Skip if `gh auth status` already returns 0.**
+
+### Probe — is `gh` installed and authed?
+
+- **Windows:**
+  ```powershell
+  try { gh auth status 2>&1 | Out-Null; $authed = $? } catch { $authed = $false }
+  ```
+- **Unix:**
+  ```bash
+  if gh auth status >/dev/null 2>&1; then authed=1; else authed=0; fi
+  ```
+
+If `$authed` is true → skip the rest of this step. If `gh` isn't installed
+or returns non-zero, continue.
+
+### Install `gh` if missing
+
+- **Windows:** `winget install --id GitHub.cli` (or `scoop install gh` / `choco install gh`).
+- **macOS:** `brew install gh`.
+- **Linux:** follow the official instructions at
+  https://github.com/cli/cli/blob/trunk/docs/install_linux.md (one-line
+  curl differs by distro). Once installed, `gh --version` should return.
+
+### Run the interactive login
+
+Both shells run the same command — `gh` is cross-platform:
+
+```
+gh auth login --git-protocol ssh --web
+```
+
+This is a 6-prompt flow. Walk the user through it (the agent cannot
+answer for them — the browser auth is intentionally human-driven):
+
+1. **What account?** → `GitHub.com`
+2. **What protocol?** → `SSH` (pre-selected by the flag)
+3. **Generate a new SSH key?** → `Yes`
+4. **Passphrase?** → Enter (empty) for non-interactive use, or pick one
+   if the machine isn't trusted to be solo-user.
+5. **Title for the SSH key?** → use the machine hostname so each
+   machine's key is identifiable in GitHub settings (`hostname` on Unix,
+   `$env:COMPUTERNAME` on Windows).
+6. **How to authenticate?** → `Login with a web browser` → copy the
+   one-time code, hit Enter, paste the code in the browser, authorize.
+
+### Verify
+
+After the login returns:
+
+- **Windows:**
+  ```powershell
+  gh auth status
+  ssh -T git@github.com   # expect: "Hi <username>! You've successfully authenticated..."
+  ```
+- **Unix:**
+  ```bash
+  gh auth status
+  ssh -T git@github.com -o StrictHostKeyChecking=accept-new
+  ```
+
+`ssh -T` is expected to exit with code 1 (GitHub doesn't allow shell
+access) — the success signal is the `Hi <username>!` message in stdout,
+not the exit code.
+
+### What this leaves on disk
+
+- A new ed25519 key pair at `~/.ssh/id_ed25519` (and `.pub`).
+- An entry in `~/.ssh/config` (or `~/.gitconfig`) wiring SSH to github.com.
+- A `gh` auth token in the OS credential store (Windows Credential
+  Manager / macOS Keychain / Linux keyring).
+- A new public key registered against your GitHub account under the
+  hostname you picked in prompt 5.
+
 ## Step 1 — Locate or clone the repo
 
 The repo lives at `https://github.com/cchifor/claude`. If it's already
