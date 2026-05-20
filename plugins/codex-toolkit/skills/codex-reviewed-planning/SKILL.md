@@ -1,6 +1,6 @@
 ---
 name: codex-reviewed-planning
-description: Use when the user asks for a plan/design and wants it reviewed by a second model. Covers two phases - (A) plan review BEFORE implementation, and (B) implementation review AFTER implementation, against the finalized plan. Both phases use the same Opus<->Codex feedback loop - Opus drafts, Codex critiques in a read-only worktree and emits inline `<!-- codex: ... -->` markers, Opus addresses each marker and either iterates or converges, capped at 2 rounds per phase, then escalates to the user on persistent disagreement.
+description: Use when the user asks for a plan/design with codex (or 'second opinion'). Covers the full lifecycle by default - (A) plan review BEFORE implementation AND (B) implementation review AFTER. The signal "use codex" triggers BOTH phases; opt out per-phase by saying "plan only" or "skip impl review". Opus<->Codex feedback loop - Opus drafts, Codex critiques in a read-only worktree and emits inline `<!-- codex: ... -->` markers, Opus addresses each marker and either iterates or converges, capped at 2 rounds per phase, then escalates to the user on persistent disagreement.
 ---
 
 # Codex-Reviewed Planning
@@ -35,16 +35,22 @@ The skill auto-detects which phase to enter based on what's already in `<repo>/p
 
 ## When this applies
 
-**Use Phase A when:**
-- The user asks for a plan/design AND explicitly mentions Codex review / second opinion.
-- The user asks for a plan AND it's non-trivial (multi-file, multi-step, architectural).
-- The user is choosing between competing approaches and wants an independent perspective.
+**Default behavior: full lifecycle (Phase A + implementation + Phase B).** Triggered by any plan/design ask combined with a "codex" or "second opinion" signal. Examples:
 
-**Use Phase B when:**
-- A plan from Phase A is finalized AND implementation commits exist on the same feature branch.
-- The user asks for a "review the implementation against the plan" or "did I miss anything".
+- `Plan X, use codex` → Phase A, then implement, then Phase B
+- `Codex-reviewed plan for X` → same
+- `Second opinion on a plan for X` → same
 
-**Skip the skill for:**
+The human-in-the-loop checkpoint between Phase A and Phase B is built into Step 6 — the user picks whether implementation proceeds. Once they authorize implementation, Phase B fires automatically after `executing-plans` returns.
+
+**Opt out per phase:**
+
+- `Plan only, don't implement` → run Phase A through Step 6, stop after finalize. No implementation, no Phase B.
+- `Plan + impl, skip impl review` → run Phase A + executing-plans, then end without dispatching Phase B.
+- `Just review the implementation against the plan` → skip straight to Phase B. Requires a finalized plan + commits already in git (phase detection routes you to Step 7).
+
+**Skip the skill entirely for:**
+
 - Trivial single-step plans (token waste — see `[[feedback_codex_windows_sandbox]]`).
 - Bug-fix plans where the root cause is already obvious.
 - Plans on `main` or other shared branches (refuse; require a feature branch).
@@ -180,12 +186,18 @@ Strip any remaining review markers. Change `<!-- codex-review-status: complete -
 git commit -am "plan: finalize <slug>"
 ```
 
-Then offer the user three options via `AskUserQuestion`:
-- **Open a PR** for human review of the converged plan
-- **Start implementation** now (hand off to `superpowers:executing-plans`)
-- **Both** — open PR and start implementation in parallel
+Ask the user how to proceed via `AskUserQuestion`. The default (and recommended) path keeps the full codex lifecycle moving:
 
-Tell the user: "When implementation is done, re-invoke this skill and it will run Phase B (codex review of the implementation against the plan)."
+- **Implement now and codex-review the impl** *(recommended — the default for "use codex" requests)*
+- **Open a PR for the plan first, then implement + Phase B** *(when you want human review on the plan before any code is written)*
+- **Stop here — plan only** *(skip implementation and Phase B; the plan itself is the deliverable)*
+
+If the user picks "implement now" (or "open a PR ... then implement"):
+
+1. Hand off to `superpowers:executing-plans` to do the work.
+2. **Once `executing-plans` returns, re-enter this skill in the same conversation.** Don't ask the user — the authorization at this step is the in-the-loop checkpoint. Phase detection at the top will see `<!-- codex-review-status: finalized -->` plus new commits since the finalize sha and route you straight to Step 7. No re-prompting needed.
+
+If the user picks "stop here", the skill ends. They can re-invoke later — phase detection still works whenever they come back.
 
 ---
 
@@ -346,7 +358,7 @@ Then offer the user via `AskUserQuestion`:
 ## Cross-references
 
 - `superpowers:writing-plans` — upstream pattern for drafting plans. Same template; Phase A adds the review loop on top.
-- `superpowers:executing-plans` — runs between Phase A's Step 6 and Phase B's Step 7. After it completes, re-invoke this skill to enter Phase B.
+- `superpowers:executing-plans` — runs between Phase A's Step 6 and Phase B's Step 7. Step 6 re-enters this skill automatically once executing-plans returns; phase detection routes to Phase B.
 - `superpowers:requesting-code-review` / `superpowers:receiving-code-review` — sibling patterns for code review *without* a finalized plan. Use those when Phase B doesn't apply.
 - `~/.claude/agents/codex.md` — the underlying dispatcher.
 - `~/.codex/config.toml` — `[profiles.plan-review]` for Phase A (writer-capable, xhigh), `[profiles.review]` for Phase B (read-only, medium).
