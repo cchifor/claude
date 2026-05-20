@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:pypi.org)",
+      "WebFetch(domain:docs.python.org)",
+      "Bash(codex --version)",
+      "Bash(codex debug models)",
+      "Bash(codex login)",
+      "Bash(codex exec:*)",
+      "Bash(git worktree add:*)",
+      "Bash(git worktree remove:*)",
+      "Bash(git worktree list)",
+      "Bash(gh repo view:*)",
+      "Bash(gh repo clone:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr checks:*)"
+    ],
+    "defaultMode": "auto"
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "codex-toolkit@chifor-claude": true,
+    "forge@chifor-claude": true,
+    "writing-a-readme@chifor-claude": true
+  },
+  "autoUpdatesChannel": "latest",
+  "skipDangerousModePermissionPrompt": true,
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true
+}

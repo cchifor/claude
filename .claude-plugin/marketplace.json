@@ -1,0 +1,32 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "chifor-claude",
+  "description": "Personal Claude Code plugins and dotfiles for cchifor — shareable across machines.",
+  "owner": {
+    "name": "cchifor",
+    "url": "https://github.com/cchifor"
+  },
+  "plugins": [
+    {
+      "name": "codex-toolkit",
+      "description": "Dispatch OpenAI Codex CLI as a Claude Code subagent and drive an Opus<->Codex plan-review loop. Includes the codex dispatcher subagent and the codex-reviewed-planning skill.",
+      "source": "./plugins/codex-toolkit",
+      "category": "development",
+      "homepage": "https://github.com/cchifor/claude/tree/main/plugins/codex-toolkit"
+    },
+    {
+      "name": "forge",
+      "description": "Generate full-stack projects (Python/FastAPI, Node/Fastify, Rust/Axum backends; Vue/Svelte/Flutter frontends) using the forge CLI in headless mode.",
+      "source": "./plugins/forge",
+      "category": "development",
+      "homepage": "https://github.com/cchifor/claude/tree/main/plugins/forge"
+    },
+    {
+      "name": "writing-a-readme",
+      "description": "Generate or audit a project's README.md against a fixed structure. Auto-detects project type from manifest files and applies per-section templates.",
+      "source": "./plugins/writing-a-readme",
+      "category": "productivity",
+      "homepage": "https://github.com/cchifor/claude/tree/main/plugins/writing-a-readme"
+    }
+  ]
+}

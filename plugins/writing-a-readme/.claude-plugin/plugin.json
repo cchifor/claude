@@ -1,0 +1,13 @@
+{
+  "name": "writing-a-readme",
+  "description": "Generate or audit a project's README.md against a fixed structure.",
+  "version": "0.1.0",
+  "author": {
+    "name": "cchifor",
+    "url": "https://github.com/cchifor"
+  },
+  "homepage": "https://github.com/cchifor/claude/tree/main/plugins/writing-a-readme",
+  "repository": "https://github.com/cchifor/claude",
+  "license": "MIT",
+  "keywords": ["readme", "documentation", "audit"]
+}

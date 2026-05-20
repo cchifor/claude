@@ -1,0 +1,13 @@
+{
+  "name": "codex-toolkit",
+  "description": "Dispatch OpenAI Codex CLI as a Claude Code subagent and drive an Opus<->Codex plan-review loop.",
+  "version": "0.1.0",
+  "author": {
+    "name": "cchifor",
+    "url": "https://github.com/cchifor"
+  },
+  "homepage": "https://github.com/cchifor/claude/tree/main/plugins/codex-toolkit",
+  "repository": "https://github.com/cchifor/claude",
+  "license": "MIT",
+  "keywords": ["codex", "planning", "review", "second-opinion", "subagent"]
+}

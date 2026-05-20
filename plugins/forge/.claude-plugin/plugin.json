@@ -1,0 +1,13 @@
+{
+  "name": "forge",
+  "description": "Generate full-stack projects using the forge CLI in headless mode.",
+  "version": "0.1.0",
+  "author": {
+    "name": "cchifor",
+    "url": "https://github.com/cchifor"
+  },
+  "homepage": "https://github.com/cchifor/claude/tree/main/plugins/forge",
+  "repository": "https://github.com/cchifor/claude",
+  "license": "MIT",
+  "keywords": ["forge", "scaffolding", "fastapi", "vue", "svelte"]
+}
