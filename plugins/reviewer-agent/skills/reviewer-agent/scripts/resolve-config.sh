@@ -53,7 +53,7 @@ DEFAULTS='{
   "validation_level": "slim",
   "include": [],
   "exclude": [],
-  "protected_paths": [".github/", "infra/", "CODEOWNERS", "scripts/up.sh", "secrets/", ".reviewer-agent.yml"],
+  "protected_paths": [".github/", "infra/", "CODEOWNERS", "scripts/up.sh", "secrets/", ".reviewer-agent.yml", "docker-compose", "mise.toml"],
   "max_prs_per_run": 50,
   "max_merges_per_run": 50,
   "lock_ttl_seconds": 3600,
