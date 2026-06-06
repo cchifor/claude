@@ -202,8 +202,8 @@ case "$CMD" in
       persist "$NEW"
     fi
     case "$OUTCOME" in
-      merged) set_primary_label "$RA_LABEL_MERGED" ;;
-      fixed) set_primary_label "$RA_LABEL_FIXED" ;;
+      merged) set_primary_label "$RA_LABEL_MERGED"; remove_label "$RA_LABEL_NEEDS_HUMAN" ;;
+      fixed) set_primary_label "$RA_LABEL_FIXED"; remove_label "$RA_LABEL_NEEDS_HUMAN" ;;
       review-only) set_primary_label "$RA_LABEL_REVIEW_ONLY"; add_label "$RA_LABEL_NEEDS_HUMAN" ;;
       needs-human) set_primary_label ""; add_label "$RA_LABEL_NEEDS_HUMAN" ;;
     esac
