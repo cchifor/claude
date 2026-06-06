@@ -81,16 +81,23 @@ persist() {  # $1 = marker json ; renders + upserts the single comment
   write_comment "$f"
 }
 
-# ── label helpers ──
+# ── label helpers (REST, not `gh pr edit`) ──
+# `gh pr edit --add/remove-label` issues a GraphQL mutation that touches
+# projectCards and ERRORS on repos with deprecated Projects-classic. The REST
+# issues/labels endpoints don't, so use them.
+add_label() { gh api --method POST "repos/$REPO/issues/$PR/labels" -f "labels[]=$1" >/dev/null 2>&1 || true; }
+remove_label() {
+  local enc; enc="$(jq -rn --arg s "$1" '$s|@uri')"
+  gh api -X DELETE "repos/$REPO/issues/$PR/labels/$enc" >/dev/null 2>&1 || true
+}
 set_primary_label() {  # remove all RA primary labels, add $1
   local keep="$1" l
   for l in "$RA_LABEL_PROCESSING" "$RA_LABEL_FIXED" "$RA_LABEL_MERGED" "$RA_LABEL_REVIEW_ONLY"; do
     [ "$l" = "$keep" ] && continue
-    gh pr edit "$PR" -R "$REPO" --remove-label "$l" >/dev/null 2>&1 || true
+    remove_label "$l"
   done
-  [ -n "$keep" ] && gh pr edit "$PR" -R "$REPO" --add-label "$keep" >/dev/null 2>&1 || true
+  [ -n "$keep" ] && add_label "$keep"
 }
-add_label() { gh pr edit "$PR" -R "$REPO" --add-label "$1" >/dev/null 2>&1 || true; }
 
 case "$CMD" in
   bootstrap)
