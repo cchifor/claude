@@ -1,0 +1,13 @@
+{
+  "name": "cleanup-local-resources",
+  "description": "Safely reclaim local dev-box resources: docker images/build-cache/volumes, package caches, stale git branches/worktrees, build artifacts, and zombie processes. Auto-applies a regenerable safe tier; aggressive actions are opt-in and guarded.",
+  "version": "0.1.0",
+  "author": {
+    "name": "cchifor",
+    "url": "https://github.com/cchifor"
+  },
+  "homepage": "https://github.com/cchifor/claude/tree/main/plugins/cleanup-local-resources",
+  "repository": "https://github.com/cchifor/claude",
+  "license": "MIT",
+  "keywords": ["cleanup", "disk-space", "docker", "prune", "zombie-processes", "git-branches"]
+}

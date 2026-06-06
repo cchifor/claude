@@ -27,6 +27,13 @@
       "source": "./plugins/writing-a-readme",
       "category": "productivity",
       "homepage": "https://github.com/cchifor/claude/tree/main/plugins/writing-a-readme"
+    },
+    {
+      "name": "cleanup-local-resources",
+      "description": "Safely reclaim local dev-box resources: docker images/build-cache/volumes, package caches, stale git branches/worktrees, build artifacts, and zombie processes. Auto-applies a regenerable safe tier; aggressive actions are opt-in and guarded.",
+      "source": "./plugins/cleanup-local-resources",
+      "category": "productivity",
+      "homepage": "https://github.com/cchifor/claude/tree/main/plugins/cleanup-local-resources"
     }
   ]
 }
