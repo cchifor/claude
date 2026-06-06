@@ -31,6 +31,7 @@ forge --project-name <name> \
   --backend-name <service-name> \
   --features "<entities>" \
   --frontend <vue|svelte|flutter|none> \
+  --layout <sidebar|topnav|tabbar|threepane|bento|docs> \
   --yes --no-docker --json \
   --output-dir .
 ```
@@ -55,6 +56,7 @@ backends:
 
 frontend:
   framework: <vue|svelte|flutter|none>
+  layout: <sidebar|topnav|tabbar|threepane|bento|docs>   # default: sidebar
   include_auth: false
 EOF
 
@@ -176,6 +178,7 @@ PostgreSQL :5432 — per-backend databases created by init-db.sh
 | `--backend-port` | 1024-65535 | `5000` |
 | `--features` | comma-separated entities | `items` |
 | `--frontend` | `vue`, `svelte`, `flutter`, `none` | `none` |
+| `--layout` | `sidebar`, `topnav`, `tabbar`, `threepane`, `bento`, `docs` | `sidebar` |
 | `--include-auth` | flag | off |
 | `--config FILE` | YAML/JSON path or `-` for stdin | |
 | `--output-dir` | path | `.` |
