@@ -34,6 +34,13 @@
       "source": "./plugins/cleanup-local-resources",
       "category": "productivity",
       "homepage": "https://github.com/cchifor/claude/tree/main/plugins/cleanup-local-resources"
+    },
+    {
+      "name": "reviewer-agent",
+      "description": "Autonomous agent that monitors a GitHub repo's open PRs and drives each toward a clean, mergeable state: analyze -> fix -> Codex cross-review -> local docker-compose validation -> push -> merge (native auto-merge where available, gated direct merge otherwise). Repo and tooling are parameters; runs single-pass, in-session /loop, or as a cron routine.",
+      "source": "./plugins/reviewer-agent",
+      "category": "development",
+      "homepage": "https://github.com/cchifor/claude/tree/main/plugins/reviewer-agent"
     }
   ]
 }

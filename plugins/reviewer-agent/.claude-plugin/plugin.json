@@ -1,0 +1,13 @@
+{
+  "name": "reviewer-agent",
+  "description": "Autonomous PR reviewer: monitors a configured GitHub repo's open PRs and drives each toward a clean, mergeable state — analyze, fix, cross-review with Codex, validate locally on docker compose, push, and merge.",
+  "version": "0.1.0",
+  "author": {
+    "name": "cchifor",
+    "url": "https://github.com/cchifor"
+  },
+  "homepage": "https://github.com/cchifor/claude/tree/main/plugins/reviewer-agent",
+  "repository": "https://github.com/cchifor/claude",
+  "license": "MIT",
+  "keywords": ["pull-request", "code-review", "auto-merge", "codex", "ci", "autonomous-agent", "docker-compose"]
+}
